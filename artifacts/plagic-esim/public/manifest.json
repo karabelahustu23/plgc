@@ -1,0 +1,20 @@
+{
+  "name": "Plagic eSIM",
+  "short_name": "Plagic",
+  "description": "Global eSIM for travelers — instant connectivity in 200+ countries",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F5F0E8",
+  "theme_color": "#D97757",
+  "categories": ["travel", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": []
+}

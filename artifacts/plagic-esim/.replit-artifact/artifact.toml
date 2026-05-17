@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Plagic eSIM"
+version = "1.0.0"
+id = "artifacts/plagic-esim"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22641
+
+[services.development]
+run = "pnpm --filter @workspace/plagic-esim run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/plagic-esim", "run", "build" ]
+publicDir = "artifacts/plagic-esim/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22641"
+BASE_PATH = "/"

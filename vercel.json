@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm --filter @workspace/plagic-esim run build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "artifacts/plagic-esim/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

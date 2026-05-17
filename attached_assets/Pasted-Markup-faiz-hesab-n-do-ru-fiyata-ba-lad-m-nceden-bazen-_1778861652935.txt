@@ -1,0 +1,54 @@
+Markup/faiz hesabını doğru fiyata bağladım
+Önceden bazen retailPrice üzerine markup ekleniyordu. Şimdi wholesale/alış fiyatı olan price esas alınıyor.
+Sebep: Senin karın gerçek alış fiyatının üzerine eklenmeli.
+
+Paket listeleme fiyatını düzelttim
+/esim/packages artık EsimAccess fiyatını USD’ye çevirip admin markup ekleyerek döndürüyor.
+Sebep: Kullanıcıya gösterilen fiyat doğru olsun.
+
+Sipariş fiyatını da aynı mantığa bağladım
+Kullanıcı satın alırken backend yeniden EsimAccess’ten paketi çekiyor, wholesale fiyatı USD’ye çeviriyor, markup ekliyor.
+Sebep: Frontend’den gelen fiyata güvenmemek ve satın alma anında doğru fiyatla işlem yapmak için.
+
+EsimAccess sipariş payload’ını düzelttim
+Eski format yanlıştı: packageCode, count, price düz objede gidiyordu.
+Yeni format: transactionId, amount, packageInfoList.
+Sebep: EsimAccess’in gerçek order API formatına uyması için.
+
+transactionId ekledim
+Firestore sipariş ID’si EsimAccess’e transactionId olarak gönderiliyor.
+Sebep: Aynı sipariş tekrar denenirse duplicate sipariş riskini azaltmak için.
+
+Siparişten hemen QR/ICCID bekleme hatasını düzelttim
+EsimAccess siparişten sonra önce orderNo döner, QR/ICCID hemen hazır olmayabilir. Artık orderNo ile profil sorgulanıyor.
+Sebep: Gerçek EsimAccess çalışma mantığı asenkron.
+
+PENDING sipariş akışı ekledim
+QR/ICCID hemen hazır değilse sipariş başarısız yapılmıyor, PENDING olarak kaydediliyor.
+Sebep: EsimAccess profili birkaç saniye sonra hazırlayabilir.
+
+Pending siparişleri otomatik güncelleme ekledim
+Kullanıcı sipariş listesini/detayını açınca backend EsimAccess’e tekrar bakıyor; profil hazırsa ACTIVE yapıyor.
+Sebep: Sipariş hazır olduktan sonra kullanıcı QR/ICCID görebilsin.
+
+Başarısız EsimAccess siparişinde otomatik iade ekledim
+Önceden cüzdandan para düşüp EsimAccess siparişi hata verirse para düşmüş kalıyordu.
+Sebep: Gerçek sipariş oluşmadıysa kullanıcıdan para alınmamalı.
+
+Siparişe orderNo ekledim
+EsimAccess sipariş numarası Firestore’da saklanıyor.
+Sebep: Sonradan profil/QR/ICCID sorgulamak için gerekli.
+
+Siparişe wholesaleAmount ekledim
+Gerçek alış fiyatı ayrıca saklanıyor.
+Sebep: Kar hesabı, raporlama ve debug için gerekli.
+
+Frontend satın alma mesajını düzelttim
+Önceden her zaman “eSIM hazır” diyordu. Şimdi sadece ACTIVE ise hazır diyor, değilse “hazırlanıyor” mesajı gösteriyor.
+Sebep: Kullanıcı yanlış yönlendirilmesin.
+
+OpenAPI/Zod/client tiplerini güncelledim
+orderNo ve wholesaleAmount alanları şemalara eklendi.
+Sebep: Backend’in döndürdüğü yeni alanlar tiplerde de tanınsın.
+
+Kısaca: fiyat hesaplama, markup, gerçek EsimAccess sipariş formatı, QR/ICCID alma akışı, pending durumları ve başarısız siparişte para iadesi düzeltildi.
